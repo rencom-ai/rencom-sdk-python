@@ -41,6 +41,14 @@ asyncio.run(main())
 
 ## Authentication
 
+### Getting an API Key
+
+1. Visit https://api.rencom.ai/login
+2. Sign in with your email, Github or Google
+3. Generate an API key from your dashboard
+
+### Using Your API Key
+
 The SDK supports multiple authentication methods:
 
 **API Key** (recommended):
@@ -72,7 +80,7 @@ client = AsyncRencomClient(jwt_token="eyJ...")
 
 ## Documentation
 
-Full documentation is available at https://rencom-sdk-python.readthedocs.io
+Full documentation coming soon.
 
 See the [examples/](./examples) directory for more usage examples.
 

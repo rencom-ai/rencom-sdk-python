@@ -3,7 +3,8 @@
 Search and discover merchants on the Universal Commerce Protocol.
 """
 
-from typing import AsyncIterator, Optional
+from collections.abc import AsyncIterator
+from typing import Any
 
 from rencom._generated.models import MerchantDetails, MerchantSearchResponse, MerchantSearchResult
 from rencom._http import HTTPClient
@@ -33,13 +34,13 @@ class MerchantClient:
     async def search(
         self,
         *,
-        capabilities: Optional[list[str]] = None,
-        industry: Optional[str] = None,
-        region: Optional[str] = None,
-        has_catalog: Optional[bool] = None,
+        capabilities: list[str] | None = None,
+        industry: str | None = None,
+        region: str | None = None,
+        has_catalog: bool | None = None,
         limit: int = 20,
         offset: int = 0,
-        session_id: Optional[str] = None,
+        session_id: str | None = None,
     ) -> MerchantSearchResponse:
         """Search for UCP merchants.
 
@@ -66,7 +67,7 @@ class MerchantClient:
             ...     print(merchant.name)
         """
         # Build query parameters
-        params = {
+        params: dict[str, Any] = {
             "limit": limit,
             "offset": offset,
         }
@@ -110,12 +111,12 @@ class MerchantClient:
     async def search_iter(
         self,
         *,
-        capabilities: Optional[list[str]] = None,
-        industry: Optional[str] = None,
-        region: Optional[str] = None,
-        has_catalog: Optional[bool] = None,
+        capabilities: list[str] | None = None,
+        industry: str | None = None,
+        region: str | None = None,
+        has_catalog: bool | None = None,
         limit: int = 20,
-        session_id: Optional[str] = None,
+        session_id: str | None = None,
     ) -> AsyncIterator[MerchantSearchResult]:
         """Auto-paginate through merchant search results.
 

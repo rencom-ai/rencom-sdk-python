@@ -4,7 +4,7 @@ All SDK-specific exceptions inherit from RencomError.
 HTTP errors are mapped to domain-specific exceptions.
 """
 
-from typing import Any, Optional
+from typing import Any
 
 
 class RencomError(Exception):
@@ -18,7 +18,7 @@ class RencomError(Exception):
         response: Raw HTTP response if available
     """
 
-    def __init__(self, message: str, response: Optional[Any] = None) -> None:
+    def __init__(self, message: str, response: Any | None = None) -> None:
         """Initialize the exception."""
         super().__init__(message)
         self.message = message
@@ -74,8 +74,8 @@ class ValidationError(RencomError):
     def __init__(
         self,
         message: str,
-        errors: Optional[list[dict[str, Any]]] = None,
-        response: Optional[Any] = None,
+        errors: list[dict[str, Any]] | None = None,
+        response: Any | None = None,
     ) -> None:
         """Initialize the validation error."""
         super().__init__(message, response)
@@ -98,11 +98,11 @@ class RateLimitError(RencomError):
         self,
         message: str,
         *,
-        retry_after: Optional[int] = None,
-        limit: Optional[int] = None,
-        remaining: Optional[int] = None,
-        reset_at: Optional[int] = None,
-        response: Optional[Any] = None,
+        retry_after: int | None = None,
+        limit: int | None = None,
+        remaining: int | None = None,
+        reset_at: int | None = None,
+        response: Any | None = None,
     ) -> None:
         """Initialize the rate limit error."""
         super().__init__(message, response)

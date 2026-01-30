@@ -151,7 +151,11 @@ class TestMerchantClient:
                     "region": "US",
                     "capabilities": [],
                     "has_native_catalog": True,
-                    "endpoints": {"rest": "https://shop1.example.com/ucp/v1", "mcp": None, "a2a": None},
+                    "endpoints": {
+                        "rest": "https://shop1.example.com/ucp/v1",
+                        "mcp": None,
+                        "a2a": None,
+                    },
                     "ucp_profile_url": "https://shop1.example.com/.well-known/ucp",
                 }
             ],
@@ -173,7 +177,11 @@ class TestMerchantClient:
                     "region": "US",
                     "capabilities": [],
                     "has_native_catalog": False,
-                    "endpoints": {"rest": "https://shop2.example.com/ucp/v1", "mcp": None, "a2a": None},
+                    "endpoints": {
+                        "rest": "https://shop2.example.com/ucp/v1",
+                        "mcp": None,
+                        "a2a": None,
+                    },
                     "ucp_profile_url": "https://shop2.example.com/.well-known/ucp",
                 }
             ],
@@ -432,8 +440,6 @@ class TestUCPNamespace:
             return_value=Response(200, json=response_data)
         )
 
-        async with AsyncRencomClient(
-            api_key="test_key", base_url="https://api.test.com"
-        ) as client:
+        async with AsyncRencomClient(api_key="test_key", base_url="https://api.test.com") as client:
             result = await client.ucp.merchants.search(industry="retail")
             assert len(result.merchants) == 0

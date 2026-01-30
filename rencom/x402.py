@@ -5,10 +5,13 @@ This module provides the high-level interface for searching x402 resources
 """
 
 import asyncio
-from typing import AsyncIterator, Iterator
+from collections.abc import AsyncIterator, Coroutine, Iterator
+from typing import Any, TypeVar
 
-from rencom._generated.models import ResourceSearchResult, SearchResponse, SortBy
+from rencom._generated.models import ResourceSearchResult, SearchResponse
 from rencom._http import HTTPClient
+
+T = TypeVar("T")
 
 
 class X402Client:
@@ -179,12 +182,11 @@ class X402Client:
         """
         # Check x402 dependency
         try:
-            import x402  # noqa: F401
-        except ImportError:
+            import x402  # type: ignore[import-not-found]  # noqa: F401
+        except ImportError as e:
             raise ImportError(
-                "x402[evm] is required for paid search. "
-                "Install with: pip install rencom[x402]"
-            )
+                "x402[evm] is required for paid search. Install with: pip install rencom[x402]"
+            ) from e
 
         # Build query parameters
         params = {
@@ -213,7 +215,9 @@ class SyncX402Client:
         ...     print(result.resource)
     """
 
-    def __init__(self, async_client: X402Client, loop=None) -> None:
+    def __init__(
+        self, async_client: X402Client, loop: asyncio.AbstractEventLoop | None = None
+    ) -> None:
         """Initialize sync wrapper.
 
         Args:
@@ -223,7 +227,7 @@ class SyncX402Client:
         self._async_client = async_client
         self._loop = loop
 
-    def _run(self, coro):
+    def _run(self, coro: Coroutine[Any, Any, T]) -> T:
         """Run an async coroutine synchronously."""
         if self._loop:
             if self._loop.is_running():
@@ -259,7 +263,9 @@ class SyncX402Client:
         offset: int = 0,
     ) -> SearchResponse:
         """Synchronous version of search()."""
-        return self._run(self._async_client.search(query, sort_by=sort_by, limit=limit, offset=offset))
+        return self._run(
+            self._async_client.search(query, sort_by=sort_by, limit=limit, offset=offset)
+        )
 
     def search_iter(
         self,
@@ -270,10 +276,10 @@ class SyncX402Client:
     ) -> Iterator[ResourceSearchResult]:
         """Synchronous version of search_iter()."""
         # Note: This is not a true sync iterator - it fetches all results first
-        all_results = []
+        all_results: list[ResourceSearchResult] = []
         async_iter = self._async_client.search_iter(query, sort_by=sort_by, limit=limit)
 
-        async def collect():
+        async def collect() -> None:
             async for result in async_iter:
                 all_results.append(result)
 
@@ -289,4 +295,6 @@ class SyncX402Client:
         offset: int = 0,
     ) -> SearchResponse:
         """Synchronous version of paid_search()."""
-        return self._run(self._async_client.paid_search(query, sort_by=sort_by, limit=limit, offset=offset))
+        return self._run(
+            self._async_client.paid_search(query, sort_by=sort_by, limit=limit, offset=offset)
+        )

@@ -8,12 +8,10 @@ from rencom._http import HTTPClient
 from rencom.exceptions import (
     AuthenticationError,
     AuthorizationError,
-    NetworkError,
     NotFoundError,
     RateLimitError,
     ServerError,
     ServiceUnavailableError,
-    TimeoutError,
     ValidationError,
 )
 
@@ -56,9 +54,7 @@ class TestHTTPClient:
 
     async def test_build_headers_priority(self):
         """Test auth header priority: admin_key > jwt > api_key."""
-        client = HTTPClient(
-            api_key="api_key", jwt_token="jwt_token", admin_key="admin_key"
-        )
+        client = HTTPClient(api_key="api_key", jwt_token="jwt_token", admin_key="admin_key")
         headers = client._build_headers()
         assert headers["X-Admin-Key"] == "admin_key"
         assert "Authorization" not in headers
@@ -209,9 +205,7 @@ class TestHTTPClient:
     @respx.mock
     async def test_retry_on_500(self):
         """Test retry logic on 500 errors."""
-        client = HTTPClient(
-            api_key="test_key", base_url="https://api.test.com", max_retries=2
-        )
+        client = HTTPClient(api_key="test_key", base_url="https://api.test.com", max_retries=2)
 
         # First two attempts fail, third succeeds
         route = respx.get("https://api.test.com/test")
@@ -229,9 +223,7 @@ class TestHTTPClient:
     @respx.mock
     async def test_max_retries_exceeded(self):
         """Test that max retries are respected."""
-        client = HTTPClient(
-            api_key="test_key", base_url="https://api.test.com", max_retries=2
-        )
+        client = HTTPClient(api_key="test_key", base_url="https://api.test.com", max_retries=2)
 
         # All attempts fail
         route = respx.get("https://api.test.com/test")

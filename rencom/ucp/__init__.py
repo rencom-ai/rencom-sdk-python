@@ -5,11 +5,15 @@ searching products across the UCP network.
 """
 
 import asyncio
+from collections.abc import Coroutine
+from typing import Any, TypeVar
 
 from rencom._http import HTTPClient
 from rencom.ucp.analytics import AnalyticsClient
 from rencom.ucp.merchants import MerchantClient
 from rencom.ucp.products import ProductClient
+
+T = TypeVar("T")
 
 
 class UCPNamespace:
@@ -48,7 +52,9 @@ class SyncUCPNamespace:
     Provides synchronous access to UCP clients.
     """
 
-    def __init__(self, async_namespace: UCPNamespace, loop=None) -> None:
+    def __init__(
+        self, async_namespace: UCPNamespace, loop: asyncio.AbstractEventLoop | None = None
+    ) -> None:
         """Initialize sync UCP namespace.
 
         Args:
@@ -58,7 +64,7 @@ class SyncUCPNamespace:
         self._async_namespace = async_namespace
         self._loop = loop
 
-    def _run(self, coro):
+    def _run(self, coro: Coroutine[Any, Any, T]) -> T:
         """Run an async coroutine synchronously."""
         if self._loop:
             if self._loop.is_running():

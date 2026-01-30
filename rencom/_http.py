@@ -10,7 +10,7 @@ This module handles:
 
 import asyncio
 import random
-from typing import Any, Optional
+from typing import Any
 
 import httpx
 
@@ -50,9 +50,9 @@ class HTTPClient:
     def __init__(
         self,
         *,
-        api_key: Optional[str] = None,
-        jwt_token: Optional[str] = None,
-        admin_key: Optional[str] = None,
+        api_key: str | None = None,
+        jwt_token: str | None = None,
+        admin_key: str | None = None,
         base_url: str = "https://api.rencom.ai",
         timeout: float = 30.0,
         max_retries: int = 3,
@@ -82,9 +82,9 @@ class HTTPClient:
         method: str,
         path: str,
         *,
-        params: Optional[dict[str, Any]] = None,
-        json: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, str]] = None,
+        params: dict[str, Any] | None = None,
+        json: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         """Make an HTTP request.
 
@@ -110,7 +110,7 @@ class HTTPClient:
         request_headers = self._build_headers(headers)
 
         # Retry logic with exponential backoff
-        last_exception: Optional[Exception] = None
+        last_exception: Exception | None = None
         for attempt in range(self.max_retries + 1):
             try:
                 response = await self.client.request(
@@ -123,24 +123,27 @@ class HTTPClient:
 
                 # Handle error responses
                 if response.status_code >= 400:
-                    await self._handle_error_response(response, attempt)
+                    await self._handle_error_response(response)
 
                 # Parse and return JSON
-                return response.json()
+                result: dict[str, Any] = response.json()
+                return result
 
-            except httpx.TimeoutException as e:
-                last_exception = TimeoutError(f"Request timeout after {self.client.timeout}s", response=None)
+            except httpx.TimeoutException:
+                last_exception = TimeoutError(
+                    f"Request timeout after {self.client.timeout}s", response=None
+                )
                 if attempt < self.max_retries:
                     await self._wait_with_backoff(attempt)
                     continue
-                raise last_exception
+                raise last_exception from None
 
             except httpx.NetworkError as e:
                 last_exception = NetworkError(f"Network error: {e}", response=None)
                 if attempt < self.max_retries:
                     await self._wait_with_backoff(attempt)
                     continue
-                raise last_exception
+                raise last_exception from None
 
             except (ServerError, ServiceUnavailableError) as e:
                 # Retry on server errors
@@ -165,7 +168,7 @@ class HTTPClient:
             raise last_exception
         raise RencomError("Request failed after all retry attempts")
 
-    def _build_headers(self, extra_headers: Optional[dict[str, str]] = None) -> dict[str, str]:
+    def _build_headers(self, extra_headers: dict[str, str] | None = None) -> dict[str, str]:
         """Build request headers with authentication.
 
         Auth priority: admin_key > jwt_token > api_key
@@ -186,7 +189,7 @@ class HTTPClient:
 
         return headers
 
-    async def _handle_error_response(self, response: httpx.Response, attempt: int) -> None:
+    async def _handle_error_response(self, response: httpx.Response) -> None:
         """Handle HTTP error responses by raising appropriate exceptions."""
         status = response.status_code
 
@@ -289,8 +292,8 @@ class HTTPClient:
         self,
         path: str,
         *,
-        params: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, str]] = None,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         """Make a GET request."""
         return await self.request("GET", path, params=params, headers=headers)
@@ -299,8 +302,8 @@ class HTTPClient:
         self,
         path: str,
         *,
-        json: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, str]] = None,
+        json: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         """Make a POST request."""
         return await self.request("POST", path, json=json, headers=headers)
@@ -309,7 +312,7 @@ class HTTPClient:
         self,
         path: str,
         *,
-        headers: Optional[dict[str, str]] = None,
+        headers: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         """Make a DELETE request."""
         return await self.request("DELETE", path, headers=headers)

@@ -48,7 +48,7 @@ def download_openapi_spec(api_url: str) -> dict[str, Any]:
 
         return spec
     except Exception as e:
-        raise Exception(f"Failed to download OpenAPI spec from {spec_url}: {e}")
+        raise Exception(f"Failed to download OpenAPI spec from {spec_url}: {e}") from e
 
 
 def generate_models(spec: dict[str, Any], output_dir: Path) -> None:
@@ -90,7 +90,7 @@ def generate_models(spec: dict[str, Any], output_dir: Path) -> None:
             text=True,
         )
     except subprocess.CalledProcessError as e:
-        raise Exception(f"Model generation failed: {e.stderr}")
+        raise Exception(f"Model generation failed: {e.stderr}") from e
     finally:
         # Clean up temp file
         temp_spec.unlink(missing_ok=True)
@@ -139,9 +139,7 @@ def generate_types(spec: dict[str, Any], output_dir: Path) -> None:
     pass
 
 
-def detect_breaking_changes(
-    old_spec: dict[str, Any], new_spec: dict[str, Any]
-) -> list[str]:
+def detect_breaking_changes(old_spec: dict[str, Any], new_spec: dict[str, Any]) -> list[str]:
     """Detect breaking changes between OpenAPI specs.
 
     Args:
@@ -180,9 +178,7 @@ def detect_breaking_changes(
 
 def main() -> int:
     """Main entry point for code generation."""
-    parser = argparse.ArgumentParser(
-        description="Generate SDK code from OpenAPI specification"
-    )
+    parser = argparse.ArgumentParser(description="Generate SDK code from OpenAPI specification")
     parser.add_argument(
         "--spec-url",
         default="http://localhost:8080",

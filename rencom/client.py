@@ -6,7 +6,7 @@ HTTP connections, authentication, and rate limiting.
 """
 
 import os
-from typing import Any, Optional
+from typing import Any
 
 from rencom._http import HTTPClient
 from rencom.auth import AuthClient
@@ -55,8 +55,8 @@ class AsyncRencomClient:
     def __init__(
         self,
         *,
-        api_key: Optional[str] = None,
-        jwt_token: Optional[str] = None,
+        api_key: str | None = None,
+        jwt_token: str | None = None,
         base_url: str = "https://api.rencom.ai",
         timeout: float = 30.0,
         max_retries: int = 3,
@@ -120,8 +120,8 @@ class RencomClient:
     def __init__(
         self,
         *,
-        api_key: Optional[str] = None,
-        jwt_token: Optional[str] = None,
+        api_key: str | None = None,
+        jwt_token: str | None = None,
         base_url: str = "https://api.rencom.ai",
         timeout: float = 30.0,
         max_retries: int = 3,

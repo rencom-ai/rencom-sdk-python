@@ -1,7 +1,5 @@
 """UCP analytics client for tracking search behavior."""
 
-from typing import Optional
-
 from rencom._http import HTTPClient
 
 
@@ -29,9 +27,9 @@ class AnalyticsClient:
         self,
         search_log_id: int,
         *,
-        clicked_product_id: Optional[int] = None,
-        clicked_merchant_id: Optional[int] = None,
-        clicked_position: Optional[int] = None,
+        clicked_product_id: int | None = None,
+        clicked_merchant_id: int | None = None,
+        clicked_position: int | None = None,
     ) -> None:
         """Log a click event on a search result.
 

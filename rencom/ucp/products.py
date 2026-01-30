@@ -3,7 +3,8 @@
 Search products across UCP merchant catalogs.
 """
 
-from typing import AsyncIterator, Literal, Optional
+from collections.abc import AsyncIterator
+from typing import Literal
 
 from rencom._generated.models import ProductSearchResponse, ProductSearchResult
 from rencom._http import HTTPClient
@@ -36,16 +37,16 @@ class ProductClient:
         self,
         query: str,
         *,
-        price_min: Optional[int] = None,
-        price_max: Optional[int] = None,
-        category: Optional[str] = None,
-        categories: Optional[list[str]] = None,
-        brand: Optional[str] = None,
-        condition: Optional[Condition] = None,
-        merchant_domains: Optional[list[str]] = None,
+        price_min: int | None = None,
+        price_max: int | None = None,
+        category: str | None = None,
+        categories: list[str] | None = None,
+        brand: str | None = None,
+        condition: Condition | None = None,
+        merchant_domains: list[str] | None = None,
         limit: int = 20,
         offset: int = 0,
-        session_id: Optional[str] = None,
+        session_id: str | None = None,
     ) -> ProductSearchResponse:
         """Search for products across UCP merchants.
 
@@ -116,15 +117,15 @@ class ProductClient:
         self,
         query: str,
         *,
-        price_min: Optional[int] = None,
-        price_max: Optional[int] = None,
-        category: Optional[str] = None,
-        categories: Optional[list[str]] = None,
-        brand: Optional[str] = None,
-        condition: Optional[Condition] = None,
-        merchant_domains: Optional[list[str]] = None,
+        price_min: int | None = None,
+        price_max: int | None = None,
+        category: str | None = None,
+        categories: list[str] | None = None,
+        brand: str | None = None,
+        condition: Condition | None = None,
+        merchant_domains: list[str] | None = None,
         limit: int = 20,
-        session_id: Optional[str] = None,
+        session_id: str | None = None,
     ) -> AsyncIterator[ProductSearchResult]:
         """Auto-paginate through product search results.
 

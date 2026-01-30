@@ -42,9 +42,7 @@ class TestX402Client:
             return_value=Response(200, json=sample_search_response)
         )
 
-        await x402_client.search(
-            "trading api", sort_by="price_low", limit=5, offset=10
-        )
+        await x402_client.search("trading api", sort_by="price_low", limit=5, offset=10)
 
         # Verify parameters were sent correctly
         request = route.calls.last.request
@@ -180,9 +178,7 @@ class TestX402Client:
             return_value=Response(200, json=sample_search_response)
         )
 
-        async with AsyncRencomClient(
-            api_key="test_key", base_url="https://api.test.com"
-        ) as client:
+        async with AsyncRencomClient(api_key="test_key", base_url="https://api.test.com") as client:
             result = await client.x402.search("trading api")
 
         assert len(result.results) == 1
@@ -220,7 +216,16 @@ class TestX402Client:
         x402_client = X402Client(http_client)
 
         page1 = {
-            "results": [{"id": 1, "resource": "https://api1.example.com", "description": "API 1", "max_amount_required": 1000, "network": "base", "final_score": 0.9}],
+            "results": [
+                {
+                    "id": 1,
+                    "resource": "https://api1.example.com",
+                    "description": "API 1",
+                    "max_amount_required": 1000,
+                    "network": "base",
+                    "final_score": 0.9,
+                }
+            ],
             "has_more": True,
             "limit": 1,
             "offset": 0,
@@ -229,7 +234,16 @@ class TestX402Client:
         }
 
         page2 = {
-            "results": [{"id": 2, "resource": "https://api2.example.com", "description": "API 2", "max_amount_required": 2000, "network": "base", "final_score": 0.8}],
+            "results": [
+                {
+                    "id": 2,
+                    "resource": "https://api2.example.com",
+                    "description": "API 2",
+                    "max_amount_required": 2000,
+                    "network": "base",
+                    "final_score": 0.8,
+                }
+            ],
             "has_more": False,
             "limit": 1,
             "offset": 1,

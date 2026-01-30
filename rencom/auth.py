@@ -8,6 +8,8 @@ This module handles:
 """
 
 import asyncio
+from collections.abc import Coroutine
+from typing import Any, TypeVar
 
 from rencom._generated.models import (
     ApiKeyListItem,
@@ -20,6 +22,8 @@ from rencom._generated.models import (
     VerifyResponse,
 )
 from rencom._http import HTTPClient
+
+T = TypeVar("T")
 
 
 class AuthClient:
@@ -213,7 +217,9 @@ class SyncAuthClient:
     Provides a synchronous interface for authentication operations.
     """
 
-    def __init__(self, async_client: AuthClient, loop=None) -> None:
+    def __init__(
+        self, async_client: AuthClient, loop: asyncio.AbstractEventLoop | None = None
+    ) -> None:
         """Initialize sync wrapper.
 
         Args:
@@ -223,7 +229,7 @@ class SyncAuthClient:
         self._async_client = async_client
         self._loop = loop
 
-    def _run(self, coro):
+    def _run(self, coro: Coroutine[Any, Any, T]) -> T:
         """Run an async coroutine synchronously."""
         if self._loop:
             if self._loop.is_running():

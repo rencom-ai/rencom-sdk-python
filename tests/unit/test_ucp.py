@@ -49,7 +49,7 @@ class TestMerchantClient:
             "search_log_id": 456,
         }
 
-        respx.get("https://api.test.com/ucp/v1/merchants/search").mock(
+        respx.get("https://api.test.com/ucp/v1/merchants").mock(
             return_value=Response(200, json=response_data)
         )
 
@@ -77,7 +77,7 @@ class TestMerchantClient:
             "search_log_id": 456,
         }
 
-        route = respx.get("https://api.test.com/ucp/v1/merchants/search").mock(
+        route = respx.get("https://api.test.com/ucp/v1/merchants").mock(
             return_value=Response(200, json=response_data)
         )
 
@@ -192,7 +192,7 @@ class TestMerchantClient:
             "search_log_id": 456,
         }
 
-        route = respx.get("https://api.test.com/ucp/v1/merchants/search")
+        route = respx.get("https://api.test.com/ucp/v1/merchants")
         route.side_effect = [
             Response(200, json=page1),
             Response(200, json=page2),
@@ -435,7 +435,7 @@ class TestUCPNamespace:
             "search_log_id": 456,
         }
 
-        respx.get("https://api.test.com/ucp/v1/merchants/search").mock(
+        respx.get("https://api.test.com/ucp/v1/merchants").mock(
             return_value=Response(200, json=response_data)
         )
 

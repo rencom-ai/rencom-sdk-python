@@ -33,7 +33,7 @@ async def main():
 
         # Search UCP merchants
         merchants = await client.ucp.merchants.search(industry="retail")
-        for merchant in merchants.results:
+        for merchant in merchants.merchants:
             print(f"{merchant.name}: {merchant.domain}")
 
 asyncio.run(main())

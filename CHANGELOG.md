@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-01-30
+
+### Fixed
+- README example: Use correct field names (`.merchants` not `.results`, `.products` not `.results`)
+- Examples: Fixed and uncommented `ucp_search.py` with correct field names
+
+## [0.1.2] - 2026-01-30
+
+### Fixed
+- UCP merchant search endpoint: Changed from `/ucp/v1/merchants/search` to `/ucp/v1/merchants` to match API
+
+## [0.1.1] - 2026-01-30
+
+### Fixed
+- GitHub workflow: Made Codecov upload optional (no longer fails if token is missing)
+- GitHub workflow: Removed Python 3.9 from test matrix (package requires >=3.10)
+
 ## [0.1.0] - 2026-01-29
 
 Initial release.

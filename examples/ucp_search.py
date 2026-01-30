@@ -9,8 +9,7 @@ This example demonstrates:
 import asyncio
 import os
 
-# TODO: Uncomment after implementation
-# from rencom import AsyncRencomClient
+from rencom import AsyncRencomClient
 
 
 async def main():
@@ -20,42 +19,39 @@ async def main():
         print("Error: RENCOM_API_KEY environment variable not set")
         return
 
-    # TODO: Uncomment after implementation
-    # async with AsyncRencomClient(api_key=api_key) as client:
-    #     # Search for retail merchants with checkout capability
-    #     print("Searching for retail merchants...")
-    #     merchants = await client.ucp.merchants.search(
-    #         capabilities=["dev.ucp.shopping.checkout"],
-    #         industry="retail",
-    #         limit=5
-    #     )
-    #
-    #     print(f"\nFound {len(merchants.results)} merchants:")
-    #     for merchant in merchants.results:
-    #         print(f"\n{merchant.name} ({merchant.domain})")
-    #         print(f"  Industry: {merchant.industry}")
-    #         print(f"  Region: {merchant.region}")
-    #         print(f"  Capabilities: {', '.join(merchant.capabilities)}")
-    #
-    #     # Search for products
-    #     print("\n\nSearching for laptops under $1500...")
-    #     products = await client.ucp.products.search(
-    #         "laptop",
-    #         price_max=150000,  # $1500 in cents
-    #         category="electronics",
-    #         condition="new",
-    #         limit=10
-    #     )
-    #
-    #     print(f"\nFound {len(products.results)} products:")
-    #     for product in products.results:
-    #         price = product.price_cents / 100
-    #         print(f"\n{product.name}")
-    #         print(f"  Price: ${price:.2f}")
-    #         print(f"  Merchant: {product.merchant_domain}")
-    #         print(f"  Brand: {product.brand}")
+    async with AsyncRencomClient(api_key=api_key) as client:
+        # Search for retail merchants with checkout capability
+        print("Searching for retail merchants...")
+        merchants = await client.ucp.merchants.search(
+            capabilities=["dev.ucp.shopping.checkout"], industry="retail", limit=5
+        )
 
-    print("TODO: Implement after client is ready")
+        print(f"\nFound {merchants.total} merchants (showing {len(merchants.merchants)}):")
+        for merchant in merchants.merchants:
+            print(f"\n{merchant.name} ({merchant.domain})")
+            print(f"  Industry: {merchant.industry}")
+            print(f"  Region: {merchant.region}")
+            print(f"  Capabilities: {', '.join(merchant.capabilities)}")
+
+        # Search for products
+        print("\n\nSearching for laptops under $1500...")
+        products = await client.ucp.products.search(
+            "laptop",
+            price_max=150000,  # $1500 in cents
+            category="electronics",
+            condition="new",
+            limit=10,
+        )
+
+        print(f"\nFound {products.total} products (showing {len(products.products)}):")
+        for product in products.products:
+            if product.price:
+                price = product.price.amount / 100
+                print(f"\n{product.title}")
+                print(f"  Price: ${price:.2f}")
+                print(f"  Merchant: {product.merchant_domain}")
+                if product.brand:
+                    print(f"  Brand: {product.brand}")
 
 
 if __name__ == "__main__":

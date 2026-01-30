@@ -84,7 +84,7 @@ class MerchantClient:
             params["session_id"] = session_id
 
         # Make request
-        response_data = await self._http.get("/ucp/v1/merchants/search", params=params)
+        response_data = await self._http.get("/ucp/v1/merchants", params=params)
 
         # Parse response
         return MerchantSearchResponse.model_validate(response_data)

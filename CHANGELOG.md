@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-01-29
+
+Initial release.
+
 ### Added
-- Initial project structure
-- Auto-generation from OpenAPI spec
 - x402 resource search client
 - UCP merchant and product discovery clients
 - Authentication flows (API key, JWT, magic link)
@@ -18,22 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Analytics tracking (sessions, clicks)
 - Comprehensive test suite
 - Full type hints and Pydantic models
+- Auto-generation from OpenAPI spec
+- HTTP/2 support via httpx[http2]
 
 ### Changed
-- None
-
-### Deprecated
-- None
-
-### Removed
-- None
+- Simplified README
 
 ### Fixed
-- None
-
-### Security
-- None
-
-## [0.1.0] - TBD
-
-Initial release (in development)
+- Analytics fields (`search_appearances`, `click_count`) now correctly map to database columns

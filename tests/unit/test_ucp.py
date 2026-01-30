@@ -117,7 +117,6 @@ class TestMerchantClient:
             "industry": "retail",
             "region": "US",
             "is_verified": True,
-            "is_premium": False,
             "is_active": True,
             "first_discovered_at": "2024-01-01T00:00:00Z",
             "last_crawled_at": "2024-01-15T00:00:00Z",

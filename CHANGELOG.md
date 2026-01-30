@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-01-30
+
+### Added
+- README: Instructions for obtaining API key at https://api.rencom.ai/login
+
+### Fixed
+- GitHub workflow: Fixed package check step to use `uv tool` instead of `uv pip`
+
 ## [0.1.3] - 2026-01-30
 
 ### Fixed

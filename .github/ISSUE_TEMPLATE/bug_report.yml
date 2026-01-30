@@ -1,0 +1,81 @@
+name: Bug Report
+description: Report a bug in the Rencom SDK
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+
+  - type: input
+    id: sdk-version
+    attributes:
+      label: SDK Version
+      description: Output of `python -c "import rencom; print(rencom.__version__)"`
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      description: Output of `python --version`
+      placeholder: "3.12.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: api-environment
+    attributes:
+      label: API Environment
+      description: Which API are you calling?
+      options:
+        - Production (https://api.rencom.ai)
+        - Staging
+        - Local development
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Clear description of the bug
+      placeholder: What happened? What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Code to Reproduce
+      description: Minimal code that reproduces the issue
+      render: python
+      placeholder: |
+        import asyncio
+        from rencom import AsyncRencomClient
+
+        async def main():
+            client = AsyncRencomClient(api_key="rk_...")
+            # Your code here
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error Message
+      description: Full error message and stack trace
+      render: shell
+      placeholder: |
+        Traceback (most recent call last):
+          ...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other information that might help
+      placeholder: Environment details, related issues, etc.

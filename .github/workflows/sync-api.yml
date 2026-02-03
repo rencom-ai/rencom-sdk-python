@@ -63,7 +63,7 @@ jobs:
         if: steps.diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
           commit-message: "chore: sync with API changes"
           title: "🤖 API Sync: Update generated code"
           body: |

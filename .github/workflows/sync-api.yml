@@ -19,10 +19,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          uv sync --extra dev
 
       - name: Download latest OpenAPI spec
         run: |
@@ -47,12 +49,12 @@ jobs:
       - name: Regenerate SDK
         if: steps.diff.outputs.changed == 'true'
         run: |
-          python scripts/generate.py --spec-url https://api.rencom.ai
+          uv run python scripts/generate.py --spec-url https://api.rencom.ai
 
       - name: Run tests
         if: steps.diff.outputs.changed == 'true'
         run: |
-          pytest -m unit
+          uv run pytest -m unit
 
       - name: Create Pull Request
         if: steps.diff.outputs.changed == 'true'

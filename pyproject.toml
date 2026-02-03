@@ -90,6 +90,9 @@ packages = ["rencom"]
 target-version = "py310"
 line-length = 100
 
+[tool.ruff.format]
+exclude = ["rencom/_generated/**"]
+
 [tool.ruff.lint]
 select = [
     "E",      # pycodestyle errors

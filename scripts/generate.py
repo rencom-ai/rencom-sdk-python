@@ -84,6 +84,7 @@ def generate_models(spec: dict[str, Any], output_dir: Path) -> None:
                 "--use-standard-collections",
                 "--field-constraints",
                 "--snake-case-field",
+                "--disable-timestamp",
             ],
             check=True,
             capture_output=True,

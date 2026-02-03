@@ -31,10 +31,10 @@ async def main():
         for result in results.results:
             print(f"{result.resource}: {result.description}")
 
-        # Search UCP merchants
-        merchants = await client.ucp.merchants.search(industry="retail")
-        for merchant in merchants.merchants:
-            print(f"{merchant.name}: {merchant.domain}")
+        # Search UCP products
+        products = await client.ucp.products.search("laptop case")
+        for product in products.products:
+            print(f"{product.title} - ${product.price.amount / 100:.2f}")
 
 asyncio.run(main())
 ```

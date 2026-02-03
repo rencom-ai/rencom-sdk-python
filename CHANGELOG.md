@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-01-30
+
+### Changed
+- README: Updated example to use product search instead of merchant search (demonstrates text search capability)
+
+### Fixed
+- GitHub workflow: Fixed sync-api workflow to use production API URL instead of localhost
+
 ## [0.1.4] - 2026-01-30
 
 ### Added

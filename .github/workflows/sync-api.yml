@@ -47,7 +47,7 @@ jobs:
       - name: Regenerate SDK
         if: steps.diff.outputs.changed == 'true'
         run: |
-          python scripts/generate.py
+          python scripts/generate.py --spec-url https://api.rencom.ai
 
       - name: Run tests
         if: steps.diff.outputs.changed == 'true'

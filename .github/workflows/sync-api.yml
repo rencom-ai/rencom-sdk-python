@@ -56,6 +56,11 @@ jobs:
         run: |
           uv run python scripts/generate.py --spec-url https://api.rencom.ai
 
+      - name: Format generated code
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          uv run ruff format .
+
       - name: Run tests
         if: steps.diff.outputs.changed == 'true'
         run: |
@@ -67,7 +72,7 @@ jobs:
         with:
           token: ${{ secrets.PAT_TOKEN }}
           commit-message: "chore: sync with API changes"
-          title: "🤖 API Sync: Update generated code"
+          title: "API Sync: Update generated code"
           body: |
             Auto-generated PR from API changes detected in OpenAPI spec.
 
